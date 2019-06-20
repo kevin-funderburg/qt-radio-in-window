@@ -1,0 +1,34 @@
+# Mac Files #
+#############
+.DS_Store
+.Trashes
+.Spotlight-V100
+
+
+# JetBrains Files #
+###################
+.idea
+
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+
+# Temporary files #
+###################
+*.swp
+*.swo
+*~
+
+###########
+# Various #
+###########
+.zip
