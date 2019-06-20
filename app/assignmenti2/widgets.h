@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WIDGETS_H
+#define WIDGETS_H
 
 #include <QWidget>
 

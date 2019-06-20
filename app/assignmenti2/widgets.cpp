@@ -11,7 +11,7 @@
 #include <QString>
 #include <QLabel>
 
-#include "window.h"
+#include "widgets.h"
 #include "lcdrange.h"
 
 LCDRange::LCDRange(QWidget *parent)
