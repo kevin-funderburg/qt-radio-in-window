@@ -1,9 +1,9 @@
 Simple QT Radio
 =======================
 
-A demonstration of UI development using QT to make a simple radio.
+A demonstration of UI development using QT by expanding on the original [simple QT radio](https://github.com/kevin-funderburg/simple-qt-radio) and placing it within a window with menus, and text edit area that can be edited and saved as a text file.
 
-![](/app/assignment1i/scene.png)
+![screenshot](/app/assignment12/scene.png)
 
 <!-- MarkdownTOC autolink="true" bracket="round" depth="3" autoanchor="true" -->
 
