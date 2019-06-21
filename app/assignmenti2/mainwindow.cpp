@@ -1,5 +1,6 @@
 #include <QtGui>
 
+#include "lcdrange.h"
 #include "radio.h"
 #include "mainwindow.h"
 
@@ -79,7 +80,6 @@ void MainWindow::createMenus()
     helpMenu->addAction(aboutQtAct);
 }
 
-
 void MainWindow::save()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -109,7 +109,6 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage(tr("Ready"));
 }
 
-
 void MainWindow::createDockWindows()
 {
     QDockWidget *dock = new QDockWidget(tr("Customers"), this);
@@ -124,9 +123,11 @@ void MainWindow::createDockWindows()
                                    << "Sally Hobart, Tiroli Tea, 67 Long River, Fedula");
     dock->setWidget(customerList);
     addDockWidget(Qt::RightDockWidgetArea, dock);
-//    viewMenu->addAction(dock->toggleViewAction());
+    viewMenu->addAction(dock->toggleViewAction());
 //
-    Radio *radio = new Radio;
+    dock = new QDockWidget(tr("radio"), this);
+    QWidget *radio = new Radio;
+//    something = new QListWidget(dock);
 //    dock = new QDockWidget(tr("Paragraphs"), this);
 //    paragraphsList = new QListWidget(dock);
 //    paragraphsList->addItems(QStringList()
@@ -149,8 +150,8 @@ void MainWindow::createDockWindows()
 //                                        "buy more items, or should we return the excess to you?");
 //    dock->setWidget(paragraphsList);
     dock->setWidget(radio);
-    addDockWidget(Qt::RightDockWidgetArea, radio);
-//    viewMenu->addAction(dock->toggleViewAction());
+    addDockWidget(Qt::RightDockWidgetArea, dock);
+    viewMenu->addAction(dock->toggleViewAction());
 //
 //    connect(customerList, SIGNAL(currentTextChanged(QString)),
 //            this, SLOT(insertCustomer(QString)));
