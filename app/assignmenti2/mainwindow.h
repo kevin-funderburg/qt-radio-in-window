@@ -1,4 +1,4 @@
-,#ifndef MAINWINDOW_H
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -16,8 +16,8 @@ public:
     MainWindow();
 
 private slots:
-    // void newLetter();
-    // void save();
+            // void newLetter();
+            void save();
     // void print();
     // void undo();
     // void about();
@@ -25,10 +25,9 @@ private slots:
     // void addParagraph(const QString &paragraph);
 
 private:
-    // void createActions();
+    void createActions();
     void createMenus();
-    // void createToolBars();
-    // void createStatusBar();
+    void createStatusBar();
     void createDockWindows();
 
     QTextEdit *textEdit;

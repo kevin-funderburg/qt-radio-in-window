@@ -11,7 +11,7 @@
 #include <QString>
 #include <QLabel>
 
-#include "widgets.h"
+#include "radio.h"
 #include "lcdrange.h"
 
 LCDRange::LCDRange(QWidget *parent)
@@ -86,7 +86,7 @@ DialRange::DialRange(QWidget *parent)
 }
 
 
-MyWidget::MyWidget(QWidget *parent)
+Radio::Radio(QWidget *parent)
 : QWidget(parent)
 {
     // Quit
