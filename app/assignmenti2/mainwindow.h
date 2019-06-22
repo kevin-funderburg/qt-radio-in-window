@@ -17,10 +17,13 @@ public:
 
 private slots:
             // void newLetter();
-            void save();
+    void save();
+    void open();
+    void _new();
+//    void newAct();
     // void print();
-    // void undo();
-    // void about();
+     void undo();
+     void about();
     // void insertCustomer(const QString &customer);
     // void addParagraph(const QString &paragraph);
 
@@ -40,9 +43,9 @@ private:
     QMenu *helpMenu;
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
-    QAction *newLetterAct;
+    QAction *newAct;
+    QAction *openAct;
     QAction *saveAct;
-    QAction *printAct;
     QAction *undoAct;
     QAction *aboutAct;
     QAction *aboutQtAct;

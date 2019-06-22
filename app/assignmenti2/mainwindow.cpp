@@ -1,11 +1,10 @@
 #include <QtGui>
+#include <QString>
 
-#include "lcdrange.h"
 #include "radio.h"
 #include "mainwindow.h"
 
-MainWindow::MainWindow()
-{
+MainWindow::MainWindow() {
     textEdit = new QTextEdit;
     setCentralWidget(textEdit);
 
@@ -21,29 +20,21 @@ MainWindow::MainWindow()
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
+void MainWindow::createActions() {
+    newAct = new QAction(tr("&New File"), this);
+    newAct->setShortcuts(QKeySequence::New);
+    newAct->setStatusTip(tr("Create a new form letter"));
+    connect(newAct, SIGNAL(triggered()), this, SLOT(_new()));
 
-void MainWindow::createActions()
-{
-    newLetterAct = new QAction(QIcon(":/images/new.png"), tr("&New Letter"),
-                               this);
-    newLetterAct->setShortcuts(QKeySequence::New);
-    newLetterAct->setStatusTip(tr("Create a new form letter"));
-    connect(newLetterAct, SIGNAL(triggered()), this, SLOT(newLetter()));
-
-    saveAct = new QAction(QIcon(":/images/save.png"), tr("&Save..."), this);
+    saveAct = new QAction(tr("&Save..."), this);
     saveAct->setShortcuts(QKeySequence::Save);
     saveAct->setStatusTip(tr("Save the current form letter"));
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
-    printAct = new QAction(QIcon(":/images/print.png"), tr("&Print..."), this);
-    printAct->setShortcuts(QKeySequence::Print);
-    printAct->setStatusTip(tr("Print the current form letter"));
-    connect(printAct, SIGNAL(triggered()), this, SLOT(print()));
-
-    undoAct = new QAction(QIcon(":/images/undo.png"), tr("&Undo"), this);
-    undoAct->setShortcuts(QKeySequence::Undo);
-    undoAct->setStatusTip(tr("Undo the last editing action"));
-    connect(undoAct, SIGNAL(triggered()), this, SLOT(undo()));
+    openAct = new QAction(tr("&Open..."), this);
+    openAct->setShortcuts(QKeySequence::Open);
+    openAct->setStatusTip(tr("Open a text file"));
+    connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
     quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcuts(QKeySequence::Quit);
@@ -59,12 +50,11 @@ void MainWindow::createActions()
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
-void MainWindow::createMenus()
-{
+void MainWindow::createMenus() {
     fileMenu = menuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(newLetterAct);
+    fileMenu->addAction(newAct);
+    fileMenu->addAction(openAct);
     fileMenu->addAction(saveAct);
-    fileMenu->addAction(printAct);
     fileMenu->addSeparator();
     fileMenu->addAction(quitAct);
 ////
@@ -80,11 +70,56 @@ void MainWindow::createMenus()
     helpMenu->addAction(aboutQtAct);
 }
 
-void MainWindow::save()
-{
+void MainWindow::_new() {
+    textEdit->clear();
+
+    QTextCursor cursor(textEdit->textCursor());
+    cursor.movePosition(QTextCursor::Start);
+    QTextFrame *topFrame = cursor.currentFrame();
+    QTextFrameFormat topFrameFormat = topFrame->frameFormat();
+    topFrameFormat.setPadding(16);
+    topFrame->setFrameFormat(topFrameFormat);
+
+    QTextCharFormat textFormat;
+    QTextCharFormat boldFormat;
+    boldFormat.setFontWeight(QFont::Bold);
+    QTextCharFormat italicFormat;
+    italicFormat.setFontItalic(true);
+
+    QTextTableFormat tableFormat;
+    tableFormat.setBorder(1);
+    tableFormat.setCellPadding(16);
+    tableFormat.setAlignment(Qt::AlignRight);
+    cursor.insertTable(1, 1, tableFormat);
+    cursor.insertText("The Firm", boldFormat);
+    cursor.insertBlock();
+    cursor.insertText("321 City Street", textFormat);
+    cursor.insertBlock();
+    cursor.insertText("Industry Park");
+    cursor.insertBlock();
+    cursor.insertText("Some Country");
+    cursor.setPosition(topFrame->lastPosition());
+    cursor.insertText(QDate::currentDate().toString("d MMMM yyyy"), textFormat);
+    cursor.insertBlock();
+    cursor.insertBlock();
+    cursor.insertText("Dear ", textFormat);
+    cursor.insertText("NAME", italicFormat);
+    cursor.insertText(",", textFormat);
+    for (int i = 0; i < 3; ++i)
+        cursor.insertBlock();
+    cursor.insertText(tr("Yours sincerely,"), textFormat);
+    for (int i = 0; i < 3; ++i)
+        cursor.insertBlock();
+    cursor.insertText("The Boss", textFormat);
+    cursor.insertBlock();
+    cursor.insertText("ADDRESS", italicFormat);
+}
+
+void MainWindow::save() {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Choose a file name"), ".",
-                                                    tr("HTML (*.html *.htm)"));
+                                                    tr("Choose a file name"),
+                                                    ".",
+                                                    tr("Text files (*.txt)"));
     if (fileName.isEmpty())
         return;
     QFile file(fileName);
@@ -104,13 +139,50 @@ void MainWindow::save()
     statusBar()->showMessage(tr("Saved '%1'").arg(fileName), 2000);
 }
 
-void MainWindow::createStatusBar()
-{
+void MainWindow::open() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                    ".",
+                                                    tr("Text files (*.txt)"));
+    if (fileName.isEmpty())
+        return;
+    QFile file(fileName);
+    if (!file.open(QFile::ReadWrite | QFile::Text)) {
+        QMessageBox::warning(this, tr("Dock Widgets"),
+                             tr("Cannot open file %1:\n%2.")
+                                     .arg(fileName)
+                                     .arg(file.errorString()));
+        return;
+    }
+
+    QString str;
+    QTextStream in(&file);
+    str = in.readAll();
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    textEdit->setPlainText(str);
+    QApplication::restoreOverrideCursor();
+
+    statusBar()->showMessage(tr("Opening '%1'").arg(fileName), 2000);
+}
+
+void MainWindow::undo() {
+    QTextDocument *document = textEdit->document();
+    document->undo();
+}
+
+void MainWindow::about() {
+    QMessageBox::about(this, tr("About Dock Widgets"),
+                       tr("The <b>Dock Widgets</b> example demonstrates how to "
+                          "use Qt's dock widgets. You can enter your own text, "
+                          "click a customer to add a customer name and "
+                          "address, and click standard paragraphs to add them."));
+}
+
+void MainWindow::createStatusBar() {
     statusBar()->showMessage(tr("Ready"));
 }
 
-void MainWindow::createDockWindows()
-{
+void MainWindow::createDockWindows() {
     QDockWidget *dock = new QDockWidget(tr("Customers"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     customerList = new QListWidget(dock);
@@ -127,28 +199,7 @@ void MainWindow::createDockWindows()
 //
     dock = new QDockWidget(tr("radio"), this);
     QWidget *radio = new Radio;
-//    something = new QListWidget(dock);
-//    dock = new QDockWidget(tr("Paragraphs"), this);
-//    paragraphsList = new QListWidget(dock);
-//    paragraphsList->addItems(QStringList()
-//                                     << "Thank you for your payment which we have received today."
-//                                     << "Your order has been dispatched and should be with you "
-//                                        "within 28 days."
-//                                     << "We have dispatched those items that were in stock. The "
-//                                        "rest of your order will be dispatched once all the "
-//                                        "remaining items have arrived at our warehouse. No "
-//                                        "additional shipping charges will be made."
-//                                     << "You made a small overpayment (less than $5) which we "
-//                                        "will keep on account for you, or return at your request."
-//                                     << "You made a small underpayment (less than $1), but we have "
-//                                        "sent your order anyway. We'll add this underpayment to "
-//                                        "your next bill."
-//                                     << "Unfortunately you did not send enough money. Please remit "
-//                                        "an additional $. Your order will be dispatched as soon as "
-//                                        "the complete amount has been received."
-//                                     << "You made an overpayment (more than $5). Do you wish to "
-//                                        "buy more items, or should we return the excess to you?");
-//    dock->setWidget(paragraphsList);
+
     dock->setWidget(radio);
     addDockWidget(Qt::RightDockWidgetArea, dock);
     viewMenu->addAction(dock->toggleViewAction());

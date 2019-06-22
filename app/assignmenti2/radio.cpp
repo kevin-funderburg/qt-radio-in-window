@@ -90,7 +90,7 @@ Radio::Radio(QWidget *parent)
 : QWidget(parent)
 {
     // Quit
-    QPushButton *quit = new QPushButton(tr("Quit"));
+    QPushButton *quit = new QPushButton(tr("Exit"));
     quit->setFont(QFont("Helvetica", 18, QFont::Bold));
     // Connect the signal of the button click to the quit action
     connect(quit, SIGNAL(clicked()), qApp, SLOT(quit()));
