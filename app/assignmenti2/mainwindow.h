@@ -19,7 +19,7 @@ private slots:
             // void newLetter();
     void save();
     void open();
-    void _new();
+    void newTxt();
 //    void newAct();
     // void print();
      void undo();
