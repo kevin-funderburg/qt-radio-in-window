@@ -1,9 +1,9 @@
 Simple QT Radio
 =======================
 
-A demonstration of UI development using QT by expanding on the original [simple QT radio](https://github.com/kevin-funderburg/simple-qt-radio) and placing it within a window with menus, and text edit area that can be edited and saved as a text file.
+A demonstration of UI development using QT by expanding on the original [simple QT radio](https://github.com/kevin-funderburg/simple-qt-radio) and placing it within a window with menus, along with a text edit area that can be edited and saved as a text file.
 
-![screenshot](/app/assignment12/scene.png)
+![screenshot](./app/assignmenti2/scene.png)
 
 <!-- MarkdownTOC autolink="true" bracket="round" depth="3" autoanchor="true" -->
 
@@ -20,14 +20,14 @@ A demonstration of UI development using QT by expanding on the original [simple 
 Features
 --------
 
-- [enter installation informaiton]
+- This was executed on Linux using QT 4.7.
 
 
 <a id="installation"></a>
 Installation
 ------------
 
-
+- To bypass VM use, I utlized [@Grant Slape](https://github.com/grantslape/)'s great [Dockerfile](https://github.com/grantslape/docker-qt4.7)
 
 
 <a id="usage"></a>
