@@ -35,6 +35,11 @@ void MainWindow::createActions()
     openAct->setStatusTip(tr("Open a text file"));
     connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+    undoAct = new QAction(tr("&Undo..."), this);
+    undoAct->setShortcuts(QKeySequence::Undo);
+    undoAct->setStatusTip(tr("Undo last change"));
+    connect(undoAct, SIGNAL(triggered()), this, SLOT(undo()));
+
     quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcuts(QKeySequence::Quit);
     quitAct->setStatusTip(tr("Quit the application"));
