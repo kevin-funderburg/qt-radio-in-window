@@ -5,12 +5,16 @@
 
 MainWindow::MainWindow()
 {
+    // Create textedit area for main window
     textEdit = new QTextEdit;
     setCentralWidget(textEdit);
-
+    // Initialize the acitions for the menus
     createActions();
+    // Add the actions to the menus
     createMenus();
     createStatusBar();
+    // Create dock widget area populated with Radio class
+    // created previously
     createDockWindows();
 
     setWindowTitle(tr("Dock Widgets"));
@@ -20,6 +24,9 @@ MainWindow::MainWindow()
 
 void MainWindow::createActions()
 {
+    /// Each action below is created with shortcuts, a status tip,
+    /// and then is connected to slot function that will perform
+    /// the desired action.
     newAct = new QAction(tr("&New File"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Create a new form letter"));
@@ -56,6 +63,7 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
+    // Instantiate the menu bars with their respective actions
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(newAct);
     fileMenu->addAction(openAct);
@@ -77,6 +85,7 @@ void MainWindow::createMenus()
 
 void MainWindow::newTxt()
 {
+    //set the text area to default
     textEdit->clear();
 
     QTextCursor cursor(textEdit->textCursor());
@@ -91,6 +100,7 @@ void MainWindow::newTxt()
     cursor.insertText(defTxt, textFormat);
 }
 
+// Save the current text in the text area to a file
 void MainWindow::save()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -107,11 +117,13 @@ void MainWindow::save()
         return;
     }
 
+    // load the file into the QTextStream
     QTextStream out(&file);
+    // Set the str to the textEdit's contents
     QString str = textEdit->toPlainText();
     QApplication::setOverrideCursor(Qt::WaitCursor);
+    // Write str to the output file
     out << str;
-//    out << textEdit->toPlainText();
     QApplication::restoreOverrideCursor();
 
     statusBar()->showMessage(tr("Saved '%1'").arg(fileName), 2000);
@@ -121,6 +133,7 @@ void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".",
                                                     tr("Text files (*.txt)"));
+    // Ensure file is exists and is editable
     if (fileName.isEmpty())
         return;
     QFile file(fileName);
@@ -137,6 +150,7 @@ void MainWindow::open()
     str = in.readAll();
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
+    // Set contents of textEdit to contents of chosen file
     textEdit->setPlainText(str);
     QApplication::restoreOverrideCursor();
 
@@ -149,6 +163,7 @@ void MainWindow::undo()
     document->undo();
 }
 
+// Simple about window located within the help menu
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Dock Widgets With Radio"),
@@ -160,11 +175,14 @@ void MainWindow::about()
 
 void MainWindow::createStatusBar() { statusBar()->showMessage(tr("Ready")); }
 
+/// Creates dock widget object that loads the Radio widget
+/// created previously
 void MainWindow::createDockWindows()
 {
     QDockWidget *dock = new QDockWidget(tr("radio"), this);
     QWidget *radio = new Radio;
     dock->setWidget(radio);
     addDockWidget(Qt::RightDockWidgetArea, dock);
+    // Add toggle button in the view menu
     viewMenu->addAction(dock->toggleViewAction());
 }

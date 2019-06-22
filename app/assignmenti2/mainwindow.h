@@ -16,16 +16,11 @@ public:
     MainWindow();
 
 private slots:
-            // void newLetter();
     void save();
     void open();
     void newTxt();
-//    void newAct();
-    // void print();
-     void undo();
-     void about();
-    // void insertCustomer(const QString &customer);
-    // void addParagraph(const QString &paragraph);
+    void undo();
+    void about();
 
 private:
     void createActions();

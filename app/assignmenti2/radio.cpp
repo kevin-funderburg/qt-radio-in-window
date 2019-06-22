@@ -35,15 +35,10 @@ LCDRange::LCDRange(QWidget *parent)
 }
 
 // Public function to get the value of a LCD/slider combo
-int LCDRange::value() const
-{
-    return slider->value();
-}
+int LCDRange::value() const { return slider->value(); }
+
 // Public function to adjust the value of a LCD/slider combo
-void LCDRange::setValue(int value)
-{
-    slider->setValue(value);
-}
+void LCDRange::setValue(int value) { slider->setValue(value); }
 
 void LCDRange::setRange(int minValue, int maxValue)
 {
@@ -69,8 +64,8 @@ DialRange::DialRange(QWidget *parent)
     dial->setMinimum(0);
     dial->setMaximum(99);
     dial->setValue(49);
-    // Connect the dial's signal change to the LCD to output
-    // the dials value
+    /// Connect the dial's signal change to the LCD to output
+    /// the dials value
     connect(dial, SIGNAL(valueChanged(int)),
             lcd, SLOT(display(int)));
 
@@ -80,7 +75,8 @@ DialRange::DialRange(QWidget *parent)
     setLayout(layout);
 }
 
-
+/// Class that creates a series of widgets organized into a
+/// radio
 Radio::Radio(QWidget *parent)
 : QWidget(parent)
 {
