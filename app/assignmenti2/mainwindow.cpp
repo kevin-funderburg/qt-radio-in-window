@@ -3,7 +3,8 @@
 #include "radio.h"
 #include "mainwindow.h"
 
-MainWindow::MainWindow() {
+MainWindow::MainWindow()
+{
     textEdit = new QTextEdit;
     setCentralWidget(textEdit);
 
@@ -17,7 +18,8 @@ MainWindow::MainWindow() {
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
-void MainWindow::createActions() {
+void MainWindow::createActions()
+{
     newAct = new QAction(tr("&New File"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Create a new form letter"));
@@ -47,7 +49,8 @@ void MainWindow::createActions() {
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
-void MainWindow::createMenus() {
+void MainWindow::createMenus()
+{
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(newAct);
     fileMenu->addAction(openAct);
@@ -67,7 +70,8 @@ void MainWindow::createMenus() {
     helpMenu->addAction(aboutQtAct);
 }
 
-void MainWindow::newTxt() {
+void MainWindow::newTxt()
+{
     textEdit->clear();
 
     QTextCursor cursor(textEdit->textCursor());
@@ -82,7 +86,8 @@ void MainWindow::newTxt() {
     cursor.insertText(defTxt, textFormat);
 }
 
-void MainWindow::save() {
+void MainWindow::save()
+{
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Choose a file name"), ".",
                                                     tr("Text files (*.txt)"));
@@ -107,7 +112,8 @@ void MainWindow::save() {
     statusBar()->showMessage(tr("Saved '%1'").arg(fileName), 2000);
 }
 
-void MainWindow::open() {
+void MainWindow::open()
+{
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".",
                                                     tr("Text files (*.txt)"));
     if (fileName.isEmpty())
@@ -132,12 +138,14 @@ void MainWindow::open() {
     statusBar()->showMessage(tr("Opening '%1'").arg(fileName), 2000);
 }
 
-void MainWindow::undo() {
+void MainWindow::undo()
+{
     QTextDocument *document = textEdit->document();
     document->undo();
 }
 
-void MainWindow::about() {
+void MainWindow::about()
+{
     QMessageBox::about(this, tr("About Dock Widgets With Radio"),
                        tr("The <b>Dock Widgets</b> example demonstrates how to "
                           "use Qt's dock widgets. You can open files within the "
@@ -145,11 +153,10 @@ void MainWindow::about() {
                           "to the system."));
 }
 
-void MainWindow::createStatusBar() {
-    statusBar()->showMessage(tr("Ready"));
-}
+void MainWindow::createStatusBar() { statusBar()->showMessage(tr("Ready")); }
 
-void MainWindow::createDockWindows() {
+void MainWindow::createDockWindows()
+{
     QDockWidget *dock = new QDockWidget(tr("radio"), this);
     QWidget *radio = new Radio;
     dock->setWidget(radio);

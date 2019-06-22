@@ -1,5 +1,5 @@
-#ifndef LCDRANGE_H
-#define LCDRANGE_H
+#ifndef RANGES_H
+#define RANGES_H
 
 #include <QWidget>
 
@@ -23,5 +23,12 @@ signals:
 private:
     QSlider *slider;
 };
+
+class DialRange : public QWidget
+{
+public:
+    DialRange(QWidget *parent = 0);
+};
+
 
 #endif

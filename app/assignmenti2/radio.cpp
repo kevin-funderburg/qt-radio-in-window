@@ -12,7 +12,7 @@
 #include <QLabel>
 
 #include "radio.h"
-#include "lcdrange.h"
+#include "ranges.h"
 
 LCDRange::LCDRange(QWidget *parent)
         : QWidget(parent)
@@ -57,11 +57,6 @@ void LCDRange::setRange(int minValue, int maxValue)
     slider->setRange(minValue, maxValue);
 }
 
-class DialRange : public QWidget
-{
-    public:
-        DialRange(QWidget *parent = 0);
-};
 
 DialRange::DialRange(QWidget *parent)
     : QWidget(parent)
